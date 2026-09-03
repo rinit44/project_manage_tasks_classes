@@ -23,5 +23,5 @@ def import_students():
     db_connection.close()
     print("Importation terminée.")
 
-if __name__ == "__main__":
+
     import_students()

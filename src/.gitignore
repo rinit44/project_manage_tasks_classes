@@ -1,5 +1,11 @@
+# Environnement virtuel
+venv/
 .venv/
+
+# Cache Python
 __pycache__/
-*.db
 *.pyc
-.env
+
+# Config locale / Fichiers générés
+config.py
+ordre_en_classe_*.csv

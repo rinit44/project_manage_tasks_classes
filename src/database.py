@@ -10,6 +10,3 @@ def open_db():
         buffered=True,
         autocommit=True
     )
-
-
-
