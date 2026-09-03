@@ -1,25 +1,23 @@
-import mysql.connector
-from database import open_db
+# name : import_data_class.py
+# author : Rinit Krasniqi
+# date : 03.09.2026
+from database import insert_classes
 
+def import_data_classes():
+    classes_to_insert = []
 
-def import_classes():
-    db_connection = open_db()
-    cursor = db_connection.cursor()
-
-    query_insert = """
-        INSERT INTO classes (name, room)
-        VALUES (%s, %s)
-    """
-
-    with open("data/raw/classes.csv", encoding="utf-8") as file:
+    with open("data/raw/classes.csv", encoding="cp1252") as file:
         next(file)
         for line in file:
-            name, room = line.strip().split(";")
-            cursor.execute(query_insert, (name, room))
+            line_clean = line.strip()
+            if line_clean:
+                name, room = line_clean.split(";")
+                classes_to_insert.append((name, room))
 
-    cursor.close()
-    db_connection.close()
+    if classes_to_insert:
+        insert_classes(classes_to_insert)
+
     print("Importation terminée.")
 
-
-    import_classes()
+if __name__ == "__main__":
+    import_data_classes()

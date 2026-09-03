@@ -1,27 +1,23 @@
-import mysql.connector
-from database import open_db
+# name : import_data_students.py
+# author : Rinit Krasniqi
+# date : 03.09.2026
+from database import insert_students
 
-def import_students():
-    db_connection = open_db()
-    cursor = db_connection.cursor()
+def import_data_students():
+    students_to_insert = []
 
-    query_insert = """
-        INSERT INTO students (firstname, lastname, mail, class_id)
-        SELECT %s, %s, %s, id 
-        FROM classes 
-        WHERE classe_name = %s
-    """
-
-    with open("data/raw/students.csv", encoding="utf-8") as file:
+    with open("data/raw/students.csv", encoding="cp1252") as file:
         next(file)
         for line in file:
-            firstname, lastname, mail, room = line.strip().split(";")
-            
-            cursor.execute(query_insert, (firstname, lastname, mail, room))
+            line_clean = line.strip()
+            if line_clean:
+                firstname, lastname, mail, room = line_clean.split(";")
+                students_to_insert.append((firstname, lastname, mail, room))
 
-    cursor.close()
-    db_connection.close()
+    if students_to_insert:
+        insert_students(students_to_insert)
+
     print("Importation terminée.")
 
-
-    import_students()
+if __name__ == "__main__":
+    import_data_students()
