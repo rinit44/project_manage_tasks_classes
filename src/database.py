@@ -1,6 +1,7 @@
 # name : database.py
 # author : Rinit Krasniqi
 # date : 03.09.2026
+import uuid
 import mysql.connector
 
 def open_db():
@@ -47,3 +48,60 @@ def insert_students(students_data):
 
     cursor.close()
     db_connection.close()
+
+def search_student(firstname, lastname, classe_name):
+    db_connection = open_db()
+    cursor = db_connection.cursor()
+
+    query_search = """
+        SELECT students.id, students.firstname, students.lastname, classes.classe_name
+        FROM students
+        JOIN classes ON students.class_id = classes.id
+        WHERE students.firstname = %s 
+        AND students.lastname = %s 
+        AND classes.classe_name = %s
+    """
+    cursor.execute(query_search, (firstname, lastname, classe_name))
+    result = cursor.fetchone()
+
+    cursor.close()
+    db_connection.close()
+
+    return result
+
+
+def delete_student(student_id):
+    db_connection = open_db()
+    cursor = db_connection.cursor()
+
+    try:
+        cursor.execute("DELETE FROM students WHERE id = %s", (student_id,))
+        success = True
+    except mysql.connector.IntegrityError:
+        success = False
+    finally:
+        cursor.close()
+        db_connection.close()
+
+    return success
+
+
+def insert_student(firstname, lastname, mail, classe_name):
+    if not mail:
+        mail = f"no-mail-{uuid.uuid4().hex[:8]}@eduvaud.ch"
+
+    db_connection = open_db()
+    cursor = db_connection.cursor()
+
+    cursor.execute("""
+        INSERT INTO students (firstname, lastname, mail, class_id)
+        SELECT %s, %s, %s, id
+        FROM classes
+        WHERE classe_name = %s
+    """, (firstname, lastname, mail, classe_name))
+    success = cursor.rowcount > 0
+
+    cursor.close()
+    db_connection.close()
+
+    return success

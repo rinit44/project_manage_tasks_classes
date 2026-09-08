@@ -6,7 +6,7 @@ from database import insert_classes
 def import_data_classes():
     classes_to_insert = []
 
-    with open("data/raw/classes.csv", encoding="cp1252") as file:
+    with open("data/raw/classes.csv", mode="r", encoding="cp1252") as file:
         next(file)
         for line in file:
             line_clean = line.strip()

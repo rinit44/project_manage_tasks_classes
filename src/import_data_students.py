@@ -6,7 +6,7 @@ from database import insert_students
 def import_data_students():
     students_to_insert = []
 
-    with open("data/raw/students.csv", encoding="cp1252") as file:
+    with open("data/raw/students.csv", mode="r", encoding="cp1252") as file:
         next(file)
         for line in file:
             line_clean = line.strip()
