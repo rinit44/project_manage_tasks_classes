@@ -86,11 +86,9 @@ def delete_student(student_id):
 
 
 def insert_student(firstname, lastname, mail, classe_name):
-    try:
-        if not mail.endswith("@eduvaud.ch"):
-            raise ValueError("Cet email ne fait pas partie du domaine eduvaud")
-    except ValueError as e:
-        print(f"Erreur : {e}")
+    if not mail.endswith("@eduvaud.ch"):
+        raise ValueError("Cet email ne fait pas partie du domaine eduvaud")
+
         
 
     db_connection = open_db()

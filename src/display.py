@@ -85,8 +85,11 @@ def show_insertion_failed():
 
 def handle_student_insertion():
     firstname, lastname, mail, classe_name = ask_student_info_insert()
-
-    success = database.insert_student(firstname, lastname, mail, classe_name)
+    try:
+        success = database.insert_student(firstname, lastname, mail, classe_name)
+    except ValueError as e:
+        print(f"Erreur {e}")
+        return
 
     if success:
         show_insertion_success()
