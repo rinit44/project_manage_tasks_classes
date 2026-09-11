@@ -11,8 +11,8 @@ def import_data_students():
         for line in file:
             line_clean = line.strip()
             if line_clean:
-                firstname, lastname, mail, room = line_clean.split(";")
-                students_to_insert.append((firstname, lastname, mail, room))
+                firstname, lastname, mail, school_class = line_clean.split(";")
+                students_to_insert.append((firstname, lastname, mail, school_class))
 
     if students_to_insert:
         insert_students(students_to_insert)

@@ -3,4 +3,4 @@
 # date : 03.09.2026
 from src import display
 
-display.choice()
+display.run_menu()

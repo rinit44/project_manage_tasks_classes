@@ -1,7 +1,6 @@
 # name : database.py
 # author : Rinit Krasniqi
 # date : 03.09.2026
-import uuid
 import mysql.connector
 
 def open_db():
@@ -25,8 +24,8 @@ def insert_classes(classes_data):
         VALUES (%s, %s)
     """
 
-    for student in classes_data:
-        cursor.execute(query_insert, student)
+    for classe in classes_data:
+        cursor.execute(query_insert, classe)
 
     cursor.close()
     db_connection.close()
@@ -87,8 +86,12 @@ def delete_student(student_id):
 
 
 def insert_student(firstname, lastname, mail, classe_name):
-    if not mail:
-        mail = f"no-mail-{uuid.uuid4().hex[:8]}@eduvaud.ch"
+    try:
+        if not mail.endswith("@eduvaud.ch"):
+            raise ValueError("Cet email ne fait pas partie du domaine eduvaud")
+    except ValueError as e:
+        print(f"Erreur : {e}")
+        
 
     db_connection = open_db()
     cursor = db_connection.cursor()

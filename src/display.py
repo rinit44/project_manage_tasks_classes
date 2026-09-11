@@ -16,18 +16,23 @@ def show_menu():
     print("7. Sortir du menu")
     print("=" * 45)
 
-def ask_and_search_student():
+
+def ask_student_identity():
     firstname = input("Prénom de l'élève : ").strip()
     lastname = input("Nom de l'élève : ").strip()
     classe_name = input("Classe de l'élève : ").strip()
+    return firstname, lastname, classe_name
 
-    eleve = database.search_student(firstname, lastname, classe_name)
 
-    if eleve is None:
+def ask_and_search_student():
+    firstname, lastname, classe_name = ask_student_identity()
+    student = database.search_student(firstname, lastname, classe_name)
+
+    if student is None:
         show_student_not_founded()
         return None
 
-    return eleve
+    return student
 
 def show_finded_student(firstname, lastname, classe):
     print(f"\nÉlève trouvé : {firstname} {lastname} - Classe : {classe}")
@@ -47,8 +52,8 @@ def handle_student_deletion():
     if student is None:
         return
 
-    student_id, fn, ln, classe = student
-    show_finded_student(fn, ln, classe)
+    student_id, firstname, lastname, classe = student
+    show_finded_student(firstname, lastname, classe)
 
     confirmation = input("Confirmez-vous la suppression de cet élève ? (o/n) : ").strip().lower()
 
@@ -62,7 +67,7 @@ def handle_student_deletion():
         show_deletion_cancelled()
 
 
-def ask_student_info():
+def ask_student_info_insert():
     firstname = input("Prénom de l'élève : ").strip()
     lastname = input("Nom de l'élève : ").strip()
     mail = input("Email de l'élève : ").strip()
@@ -79,7 +84,7 @@ def show_insertion_failed():
 
 
 def handle_student_insertion():
-    firstname, lastname, mail, classe_name = ask_student_info()
+    firstname, lastname, mail, classe_name = ask_student_info_insert()
 
     success = database.insert_student(firstname, lastname, mail, classe_name)
 
@@ -89,25 +94,24 @@ def handle_student_insertion():
         show_insertion_failed()
 
 
-
-def choice():
+def run_menu():
     while True:
         show_menu()
-        choix = input("Choisis une option (1-7) : ").strip()
+        choice = input("Choisis une option (1-7) : ").strip()
 
-        if choix == "1":
+        if choice == "1":
             print("l'ordre en classe")
-        elif choix == "2":
+        elif choice == "2":
             print("Générer le planning")
-        elif choix == "3":
+        elif choice == "3":
             print("Valider l'ordre en classe de la semaine")
-        elif choix == "4":
+        elif choice == "4":
             handle_student_deletion()
-        elif choix == "5":
+        elif choice == "5":
             handle_student_insertion()
-        elif choix == "6":
+        elif choice == "6":
             print("generer le doc")
-        elif choix == "7":
+        elif choice == "7":
             print("\nAu revoir !")
             break
         else:
