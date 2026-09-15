@@ -20,7 +20,7 @@ def insert_classes(classes_data):
     cursor = db_connection.cursor()
 
     query_insert = """
-        INSERT IGNORE INTO classes (classe_name, classroom)
+        INSERT IGNORE INTO classes (class_name, classroom)
         VALUES (%s, %s)
     """
 
@@ -39,7 +39,7 @@ def insert_students(students_data):
         INSERT IGNORE INTO students (firstname, lastname, mail, class_id)
         SELECT %s, %s, %s, id 
         FROM classes 
-        WHERE classe_name = %s
+        WHERE class_name = %s
     """
 
     for student in students_data:
@@ -48,19 +48,19 @@ def insert_students(students_data):
     cursor.close()
     db_connection.close()
 
-def search_student(firstname, lastname, classe_name):
+def search_student(firstname, lastname, class_name):
     db_connection = open_db()
     cursor = db_connection.cursor()
 
     query_search = """
-        SELECT students.id, students.firstname, students.lastname, classes.classe_name
+        SELECT students.id, students.firstname, students.lastname, classes.class_name
         FROM students
         JOIN classes ON students.class_id = classes.id
         WHERE students.firstname = %s 
         AND students.lastname = %s 
-        AND classes.classe_name = %s
+        AND classes.class_name = %s
     """
-    cursor.execute(query_search, (firstname, lastname, classe_name))
+    cursor.execute(query_search, (firstname, lastname, class_name))
     result = cursor.fetchone()
 
     cursor.close()
@@ -85,10 +85,12 @@ def delete_student(student_id):
     return success
 
 
-def insert_student(firstname, lastname, mail, classe_name):
+def insert_student(firstname, lastname, mail, class_name):
     if not mail.endswith("@eduvaud.ch"):
-        raise ValueError("Cet email ne fait pas partie du domaine eduvaud")
+        raise ValueError("ce email ne fait pas partie du domaine eduvaud")
 
+    if not any(char.isalpha() for char in mail):
+        raise ValueError("l'email doit contenir au moins une lettre")
         
 
     db_connection = open_db()
@@ -98,8 +100,8 @@ def insert_student(firstname, lastname, mail, classe_name):
         INSERT INTO students (firstname, lastname, mail, class_id)
         SELECT %s, %s, %s, id
         FROM classes
-        WHERE classe_name = %s
-    """, (firstname, lastname, mail, classe_name))
+        WHERE class_name = %s
+    """, (firstname, lastname, mail, class_name))
     success = cursor.rowcount > 0
 
     cursor.close()

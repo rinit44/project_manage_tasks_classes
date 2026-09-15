@@ -20,22 +20,14 @@ def show_menu():
 def ask_student_identity():
     firstname = input("Prénom de l'élève : ").strip()
     lastname = input("Nom de l'élève : ").strip()
-    classe_name = input("Classe de l'élève : ").strip()
-    return firstname, lastname, classe_name
+    class_name = input("Classe de l'élève : ").strip()
+    return firstname, lastname, class_name
 
 
-def ask_and_search_student():
-    firstname, lastname, classe_name = ask_student_identity()
-    student = database.search_student(firstname, lastname, classe_name)
 
-    if student is None:
-        show_student_not_founded()
-        return None
 
-    return student
-
-def show_finded_student(firstname, lastname, classe):
-    print(f"\nÉlève trouvé : {firstname} {lastname} - Classe : {classe}")
+def show_finded_student(firstname, lastname, school_classe):
+    print(f"\nÉlève trouvé : {firstname} {lastname} - Classe : {school_classe}")
 
 def show_student_not_founded():
     print("Aucun élève trouvé avec ces informations.")
@@ -46,14 +38,24 @@ def show_deletion_student():
 def show_deletion_cancelled():
     print("Suppression annulée.")
 
+def ask_and_search_student():
+    firstname, lastname, class_name = ask_student_identity()
+    student = database.search_student(firstname, lastname, class_name)
+
+    if student is None:
+        show_student_not_founded()
+        return None
+
+    return student
+
 
 def handle_student_deletion():
     student = ask_and_search_student()
     if student is None:
         return
 
-    student_id, firstname, lastname, classe = student
-    show_finded_student(firstname, lastname, classe)
+    student_id, firstname, lastname, school_classe = student
+    show_finded_student(firstname, lastname, school_classe)
 
     confirmation = input("Confirmez-vous la suppression de cet élève ? (o/n) : ").strip().lower()
 
@@ -71,9 +73,9 @@ def ask_student_info_insert():
     firstname = input("Prénom de l'élève : ").strip()
     lastname = input("Nom de l'élève : ").strip()
     mail = input("Email de l'élève : ").strip()
-    classe_name = input("Classe de l'élève : ").strip()
+    class_name = input("Classe de l'élève : ").strip()
 
-    return firstname, lastname, mail, classe_name
+    return firstname, lastname, mail, class_name
 
 
 def show_insertion_success():
@@ -84,11 +86,11 @@ def show_insertion_failed():
 
 
 def handle_student_insertion():
-    firstname, lastname, mail, classe_name = ask_student_info_insert()
+    firstname, lastname, mail, class_name = ask_student_info_insert()
     try:
-        success = database.insert_student(firstname, lastname, mail, classe_name)
+        success = database.insert_student(firstname, lastname, mail, class_name)
     except ValueError as e:
-        print(f"Erreur {e}")
+        print(f"Erreur : {e}")
         return
 
     if success:
