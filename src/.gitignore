@@ -1,11 +1,35 @@
-# Environnement virtuel
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# --- Environnements virtuels ---
 venv/
 .venv/
+env/
+ENV/
 
-# Cache Python
-__pycache__/
-*.pyc
+# --- Variables d'environnement / secrets ---
+.env
+.env.*
 
-# Config locale / Fichiers générés
-config.py
-ordre_en_classe_*.csv
+# --- Bases de données générées ---
+*.db
+*.sqlite
+*.sqlite3
+
+# --- IDE / éditeurs ---
+.vscode/
+.idea/
+*.swp
+
+# --- Système ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Logs ---
+*.log

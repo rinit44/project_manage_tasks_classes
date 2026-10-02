@@ -24,8 +24,6 @@ def ask_student_identity():
     return firstname, lastname, class_name
 
 
-
-
 def show_finded_student(firstname, lastname, school_classe):
     print(f"\nÉlève trouvé : {firstname} {lastname} - Classe : {school_classe}")
 
