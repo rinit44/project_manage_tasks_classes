@@ -1,6 +1,7 @@
 # name : database.py
 # author : Rinit Krasniqi
 # date : 03.09.2026
+
 import mysql.connector
 
 def open_db():
@@ -72,9 +73,10 @@ def search_student(firstname, lastname, class_name):
 def delete_student(student_id):
     db_connection = open_db()
     cursor = db_connection.cursor()
+    query = "DELETE FROM students WHERE id = %s"
 
     try:
-        cursor.execute("DELETE FROM students WHERE id = %s", (student_id,))
+        cursor.execute(query, (student_id,))
         success = True
     except mysql.connector.IntegrityError:
         success = False

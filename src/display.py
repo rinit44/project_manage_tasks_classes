@@ -1,12 +1,10 @@
 # name : display.py
 # author : Rinit Krasniqi
 # date : 03.09.2026
+
 from src import database
 
 def show_menu():
-    print("\n" + "=" * 45)
-    print("     GESTION DE L'ORDRE EN CLASSE")
-    print("=" * 45)
     print("1. Afficher l'ordre en classe")
     print("2. Générer le planning « Ordre en classe »")
     print("3. Valider l'ordre en classe de la semaine")
@@ -14,7 +12,6 @@ def show_menu():
     print("5. Ajouter un élève de la liste")
     print("6. Générer le document « Ordre en classe »")
     print("7. Sortir du menu")
-    print("=" * 45)
 
 
 def ask_student_identity():
@@ -68,10 +65,10 @@ def handle_student_deletion():
 
 
 def ask_student_info_insert():
-    firstname = input("Prénom de l'élève : ").strip()
-    lastname = input("Nom de l'élève : ").strip()
-    mail = input("Email de l'élève : ").strip()
-    class_name = input("Classe de l'élève : ").strip()
+    firstname = input("Prénom de l'élève : ")
+    lastname = input("Nom de l'élève : ")
+    mail = input("Email de l'élève : ")
+    class_name = input("Classe de l'élève : ")
 
     return firstname, lastname, mail, class_name
 
@@ -99,22 +96,25 @@ def handle_student_insertion():
 
 def run_menu():
     while True:
+        print()
         show_menu()
-        choice = input("Choisis une option (1-7) : ").strip()
+        choice = int(input("Choisis une option (1-7) : "))
+        print()
 
-        if choice == "1":
+
+        if choice == 1:
             print("l'ordre en classe")
-        elif choice == "2":
+        elif choice == 2:
             print("Générer le planning")
-        elif choice == "3":
+        elif choice == 3:
             print("Valider l'ordre en classe de la semaine")
-        elif choice == "4":
+        elif choice == 4:
             handle_student_deletion()
-        elif choice == "5":
+        elif choice == 5:
             handle_student_insertion()
-        elif choice == "6":
+        elif choice == 6:
             print("generer le doc")
-        elif choice == "7":
+        elif choice == 7:
             print("\nAu revoir !")
             break
         else:
